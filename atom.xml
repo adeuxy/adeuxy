@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://adeuxy.com</id>
+    <title>Michael</title>
+    <updated>2024-04-13T09:00:14.132Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://adeuxy.com"/>
+    <link rel="self" href="https://adeuxy.com/atom.xml"/>
+    <subtitle>大自然的搬运工</subtitle>
+    <logo>https://adeuxy.com/images/avatar.png</logo>
+    <icon>https://adeuxy.com/favicon.ico</icon>
+    <rights>All rights reserved 2024, Michael</rights>
+    <entry>
+        <title type="html"><![CDATA[2020]]></title>
+        <id>https://adeuxy.com/post/2020/</id>
+        <link href="https://adeuxy.com/post/2020/">
+        </link>
+        <updated>2022-10-14T12:26:04.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[一只刺猬]]></title>
+        <id>https://adeuxy.com/post/yi-zhi-ci-wei/</id>
+        <link href="https://adeuxy.com/post/yi-zhi-ci-wei/">
+        </link>
+        <updated>2020-07-25T02:09:46.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[读《史蒂夫·乔布斯传》]]></title>
+        <id>https://adeuxy.com/post/HYQoQaHrZ/</id>
+        <link href="https://adeuxy.com/post/HYQoQaHrZ/">
+        </link>
+        <updated>2020-07-12T09:02:52.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[远程桌面]]></title>
+        <id>https://adeuxy.com/post/yuan-cheng-zhuo-mian/</id>
+        <link href="https://adeuxy.com/post/yuan-cheng-zhuo-mian/">
+        </link>
+        <updated>2018-12-23T06:04:42.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[有用的网站]]></title>
+        <id>https://adeuxy.com/post/urls/</id>
+        <link href="https://adeuxy.com/post/urls/">
+        </link>
+        <updated>2017-08-19T09:00:32.000Z</updated>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[有用的命令]]></title>
+        <id>https://adeuxy.com/post/handbook/</id>
+        <link href="https://adeuxy.com/post/handbook/">
+        </link>
+        <updated>2010-07-17T03:39:37.000Z</updated>
+    </entry>
+</feed>

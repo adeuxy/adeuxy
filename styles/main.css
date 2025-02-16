@@ -887,16 +887,30 @@ td {
 .site-footer {
   font-size: 12px;
   text-align: center;
-  padding: 40px 24px;
+  padding: 5px 24px;
   color: #868e96;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+.site-note-footer {
+  font-size: 12px;
+  text-align: center;
+  padding: 1px 1px;
+  color: #868e96;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
 .rss {
   display: inline-flex;
   align-items: center;
   margin-left: 24px;
+}
+.rsstj {
+  display: inline-flex;
+  align-items: center;
 }
 .hljs {
   display: block;

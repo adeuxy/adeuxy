@@ -892,6 +892,7 @@ td {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
 }
 .site-note-footer {
   font-size: 12px;

@@ -1,0 +1,70 @@
+name: Auto-merge dev into main
+
+on:
+  schedule:
+    - cron: '0 19 * * *'  # 每天 UTC 19:00 运行（北京时间凌晨3点）
+  workflow_dispatch:  # 手动触发（可选）
+
+jobs:
+  merge-dev-to-main:
+    if: github.repository != 'adeuxy/adeuxy'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0  # 获取完整历史以确保合并准确
+
+      - name: 配置 Git
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+
+      - name: 调试分支状态
+        run: |
+          echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
+          git fetch origin main dev
+          echo "origin/main: $(git rev-parse origin/main)"
+          echo "origin/dev: $(git rev-parse origin/dev)"
+          git diff origin/main origin/dev
+
+      - name: 检查是否有更改
+        id: check-changes
+        run: |
+          git fetch origin main dev
+          if git diff origin/main origin/dev --quiet; then
+            echo "No changes detected between origin/main and origin/dev"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected between origin/main and origin/dev"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+          cat $GITHUB_OUTPUT  # 调试：输出 GITHUB_OUTPUT 内容
+
+      - name: 合并 dev 到 main
+        if: steps.check-changes.outputs.has_changes == 'true'
+        run: |
+          git fetch origin dev
+          git merge origin/dev --no-ff -m "Auto-merge dev into main [$(date +'%Y-%m-%d')]" || {
+            echo "Merge conflict detected, aborting"
+            git merge --abort
+            exit 1
+          }
+          git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+
+      - name: 触发 CI 工作流
+        if: steps.check-changes.outputs.has_changes == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'DeployHexoBlog.yml',  
+              ref: 'main'
+            });
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

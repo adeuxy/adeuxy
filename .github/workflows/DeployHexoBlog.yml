@@ -1,0 +1,47 @@
+name: Deploy Hexo Blog
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  check-repo:
+    if: github.repository != 'adeuxy/adeuxy'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Use existing node_modules
+        run: |
+          if [ -d "node_modules" ]; then
+            echo "Using existing node_modules"
+          else
+            echo "node_modules not found, deployment may fail!"
+            exit 1
+          fi
+
+      - name: Fix Hexo Permissions
+        run: chmod +x node_modules/.bin/hexo
+
+      - name: Generate Hexo Static Files
+        run: npx hexo clean && npx hexo generate
+
+      - name: Copy updated files
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          npx hexo deploy

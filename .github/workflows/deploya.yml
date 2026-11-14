@@ -1,0 +1,57 @@
+name: Deploy adeuxy.com and delete old deployments
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  check-repo:
+    if: github.repository == 'adeuxy/adeuxy'
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Delete deployment
+        uses: strumwolf/delete-deployment-environment@v2.3.0
+        with:
+          token: ${{ secrets.REPO_B_TOKEN }}
+          environment: github-pages
+          onlyRemoveDeployments: true
+      - name: Checkout repo A
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./
+
+  deploy:
+    if: github.repository == 'adeuxy/adeuxy'
+    needs: check-repo
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  notifyme:
+    if: github.repository == 'adeuxy/adeuxy'
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Notification
+        uses: jefferyjob/notify-actions@v1
+        with:
+          NOTICE_TYPE: 'feishu'
+          MSG_TYPE: 'card'
+          STATUS: 'true'
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL_feishu }}
